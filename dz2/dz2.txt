@@ -1,0 +1,92 @@
+# 1.
+match (zaposlenik:Zaposlenik), (nadredjeni:Zaposlenik) where zaposlenik.nadredjeni_id = nadredjeni.zaposlenik_id 
+create (nadredjeni)-[:NADREDJENI]->(zaposlenik);
+---
+Created 8 relationships, completed after 378 ms.
+
+# 2.
+match (narudzba:Narudzba) with narudzba.dostava_drzava as drzava, count(narudzba.dostava_drzava) as broj_narudzbi 
+with drzava order by broj_narudzbi limit 5 return collect(drzava) as lista;
+---
+╒════════════════════════════════════════════════════╕
+│"lista"                                             │
+╞════════════════════════════════════════════════════╡
+│["Norway","Poland","Portugal","Argentina","Denmark"]│
+└────────────────────────────────────────────────────┘
+
+# 3.
+match (z:Zaposlenik)-[:OBRADIO]->(:Narudzba)-[s:SADRZI]->(:Proizvod)-[:PRIPADA]->(k:Kategorija) where 
+k.kategorija_naziv='Začini' return z.ime as ime_zaposlenika, sum(s.kolicina) as kolicina order by kolicina desc;
+---
+╒═════════════════╤══════════╕
+│"ime_zaposlenika"│"kolicina"│
+╞═════════════════╪══════════╡
+│"Margaret"       │1252      │
+├─────────────────┼──────────┤
+│"Andrew"         │709       │
+├─────────────────┼──────────┤
+│"Janet"          │670       │
+├─────────────────┼──────────┤
+│"Nancy"          │651       │
+├─────────────────┼──────────┤
+│"Laura"          │634       │
+├─────────────────┼──────────┤
+│"Anne"           │493       │
+├─────────────────┼──────────┤
+│"Robert"         │486       │
+├─────────────────┼──────────┤
+│"Michael"        │254       │
+├─────────────────┼──────────┤
+│"Steven"         │149       │
+└─────────────────┴──────────┘
+
+# 4.
+match (n:Narudzba)-[:SADRZI]->(:Proizvod)-[:PRIPADA]->(k1:Kategorija), 
+(n:Narudzba)-[:SADRZI]->(:Proizvod)-[:PRIPADA]->(k2:Kategorija) where not k1.kategorija_id=k2.kategorija_id 
+and k1.kategorija_naziv='Slatkiši' return k2.kategorija_naziv as kategorija, count(*) as broj_narudzbi;
+---
+╒═════════════════╤═══════════════╕
+│"kategorija"     │"broj_narudzbi"│
+╞═════════════════╪═══════════════╡
+│"Žitarice"       │71             │
+├─────────────────┼───────────────┤
+│"Začini"         │86             │
+├─────────────────┼───────────────┤
+│"Pića"           │149            │
+├─────────────────┼───────────────┤
+│"Morska hrana"   │116            │
+├─────────────────┼───────────────┤
+│"Mliječni pr."   │129            │
+├─────────────────┼───────────────┤
+│"Mesni proizvodi"│57             │
+├─────────────────┼───────────────┤
+│"Voće i povrće"  │49             │
+└─────────────────┴───────────────┘
+
+# 5.
+match (n:Narudzba)-[:SADRZI]->(p:Proizvod) where p.proizvod_naziv="Istarski sir" with count(n) as kolicina_sira 
+match (n:Narudzba)-[:SADRZI]->(p:Proizvod)-[:PRIPADA]->(k:Kategorija) where not p.proizvod_naziv="Istarski sir" 
+and k.kategorija_naziv="Mliječni pr." return p.proizvod_naziv as proizvod, count(n) - kolicina_sira as 
+razlika_potraznje order by razlika_potraznje desc;
+---
+╒═════════════════╤═══════════════════╕
+│"proizvod"       │"razlika_potraznje"│
+╞═════════════════╪═══════════════════╡
+│"Aromatični sir" │16                 │
+├─────────────────┼───────────────────┤
+│"Gauda"          │13                 │
+├─────────────────┼───────────────────┤
+│"Gorgonzola sir" │13                 │
+├─────────────────┼───────────────────┤
+│"Podravski sir"  │4                  │
+├─────────────────┼───────────────────┤
+│"Mozzarella"     │0                  │
+├─────────────────┼───────────────────┤
+│"Dimljeni sir"   │-6                 │
+├─────────────────┼───────────────────┤
+│"Bijeli sir"     │-7                 │
+├─────────────────┼───────────────────┤
+│"Mascarpone sir" │-23                │
+├─────────────────┼───────────────────┤
+│"Dalmatinski sir"│-24                │
+└─────────────────┴───────────────────┘

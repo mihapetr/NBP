@@ -1,0 +1,52 @@
+1. 
+> db.narudzbe.find(
+	{"detalji.kolicina" : {$gt : 120}}, 
+	{"_id" : 0, "kupac" : 1})
+
+{ "kupac" : { "naziv" : "Ernst Handel", "grad" : "Graz", "drzava" : "Austria" } }
+{ "kupac" : { "naziv" : "Ernst Handel", "grad" : "Graz", "drzava" : "Austria" } }
+
+2.
+> db.narudzbe.find(
+	{"detalji.proizvod.kategorija" : "Voće i povrće"}, 
+	{"_id" : 0, "kupac" : 1}).sort(
+	{"kupac.drzava" : 1, 
+	"kupac.naziv" : 1}).limit(5)
+
+{ "kupac" : { "naziv" : "Cactus Comidas para llevar", "grad" : "Buenos Aires", "drzava" : "Argentina" } }
+{ "kupac" : { "naziv" : "Océano Atlántico Ltda.", "grad" : "Buenos Aires", "drzava" : "Argentina" } }
+{ "kupac" : { "naziv" : "Océano Atlántico Ltda.", "grad" : "Buenos Aires", "drzava" : "Argentina" } }
+{ "kupac" : { "naziv" : "Rancho grande", "grad" : "Buenos Aires", "drzava" : "Argentina" } }
+{ "kupac" : { "naziv" : "Ernst Handel", "grad" : "Graz", "drzava" : "Austria" } }
+
+3. 
+> db.narudzbe.count({$or : [
+	{"detalji.proizvod.naziv" : "Gauda"}, 
+	{"kupac.drzava" : "Argentina"}]})
+
+67
+
+4.
+> db.narudzbe.distinct(
+	"kupac.drzava", 
+	{"detalji.proizvod.naziv" : "Tofu"})
+
+[
+        "Argentina",
+        "Austria",
+        "Brazil",
+        "Finland",
+        "France",
+        "Germany",
+        "Ireland",
+        "Mexico",
+        "Sweden",
+        "USA"
+]
+
+5.
+> db.narudzbe.updateMany(
+	{"kupac.grad" : "Frankfurt a.M."},
+	{$set : {"kupac.grad" : "Frankfurt am Main"}})
+
+{ "acknowledged" : true, "matchedCount" : 15, "modifiedCount" : 15 }

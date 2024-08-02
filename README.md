@@ -1,3 +1,3 @@
-# Zadatak
+# Napredne baze podataka
 
-[ovdje](DZ1.pdf)
+Ovo jek kolekcija svih zadaća i projekata iz kolegija Napredne baze podataka s diplomskog studija Matematika i računarstvo na PMF-MO.

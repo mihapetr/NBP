@@ -1,0 +1,30 @@
+1. 
+{ "kupac" : { "naziv" : "Ernst Handel", "grad" : "Graz", "drzava" : "Austria" } }
+{ "kupac" : { "naziv" : "Ernst Handel", "grad" : "Graz", "drzava" : "Austria" } }
+
+2.
+{ "kupac" : { "naziv" : "Cactus Comidas para llevar", "grad" : "Buenos Aires", "drzava" : "Argentina" } }
+{ "kupac" : { "naziv" : "Océano Atlántico Ltda.", "grad" : "Buenos Aires", "drzava" : "Argentina" } }
+{ "kupac" : { "naziv" : "Océano Atlántico Ltda.", "grad" : "Buenos Aires", "drzava" : "Argentina" } }
+{ "kupac" : { "naziv" : "Rancho grande", "grad" : "Buenos Aires", "drzava" : "Argentina" } }
+{ "kupac" : { "naziv" : "Ernst Handel", "grad" : "Graz", "drzava" : "Austria" } }
+
+3. 
+67
+
+4.
+[
+        "Argentina",
+        "Austria",
+        "Brazil",
+        "Finland",
+        "France",
+        "Germany",
+        "Ireland",
+        "Mexico",
+        "Sweden",
+        "USA"
+]
+
+5.
+{ "acknowledged" : true, "matchedCount" : 15, "modifiedCount" : 15 }
